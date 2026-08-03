@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Output files
+data/output/
+
+# Temporary files
+*.log
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
