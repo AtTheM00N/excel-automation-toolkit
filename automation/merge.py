@@ -2,34 +2,22 @@ from pathlib import Path
 import pandas as pd
 
 
-def merge_excel_files(input_folder, output_file):
-    # Find all Excel files in the input folder
-    excel_files = list(Path(input_folder).glob("*.xlsx"))
+def get_excel_files(input_folder):
+    return list(Path(input_folder).glob("*.xlsx"))
 
-    # Check if any files exist
+
+def merge_excel_files(input_folder):
+    excel_files = get_excel_files(input_folder)
+
     if not excel_files:
-        print("❌ No Excel files found.")
-        return
+        raise FileNotFoundError(f"No Excel files found in {input_folder}")
 
-    # Read each Excel file into a DataFrame
     dataframes = []
-    print(excel_files)
-    
-
     for file in excel_files:
         print(f"Reading: {file.name}")
-        df = pd.read_excel(file)
-        print(df)
-        print("=" * 50)
-        dataframes.append(df)
+        dataframes.append(pd.read_excel(file))
 
-    # Merge all DataFrames
     merged_df = pd.concat(dataframes, ignore_index=True)
+    print(f"Merged {len(excel_files)} files -> {len(merged_df)} rows")
 
-    # Save merged DataFrame
-    print("\nMerged DataFrame:")
-    print(merged_df)
-    merged_df.to_excel(output_file, index=False)
-
-    print(f"\n✅ Successfully merged {len(excel_files)} files.")
-    print(f"📄 Output saved to: {output_file}")
+    return merged_df
